@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "removeComments": true,
-    "noImplicitAny": false
+    "sourceMap": true,
+    "outDir": "lib",
+    "declaration": true
   },
   "exclude": [
     "node_modules"
