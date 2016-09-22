@@ -1,1 +1,1 @@
-C# ng2-github-repo-view
+# ng2-github-repo-view
