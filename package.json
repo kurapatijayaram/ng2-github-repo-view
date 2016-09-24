@@ -5,7 +5,8 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "replaceUrls": "replace '../fonts' 'node_modules/ng2-github-repo-view/lib/fonts' lib/css/bootstrap.css lib/css/bootstrap.min.css"
   },
   "dependencies": {
     "@angular/core": "^2.0.0",

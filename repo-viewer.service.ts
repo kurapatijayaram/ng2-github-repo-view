@@ -34,7 +34,7 @@ export class RepoViewerService extends RESTClient{
                   type="blobs";
                   break;
     }
-    
+
     this._fetchTree(
           this._userRepoPath,
           type,
