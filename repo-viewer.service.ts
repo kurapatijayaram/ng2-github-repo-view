@@ -19,19 +19,13 @@ export class RepoViewerService extends RESTClient{
   private _userRepoPath: string;
 
   constructor(private _http: Http){
-    super(_http)
+    super(_http);
   }
 
   setUrl(url: string){
     this.repoUrl = url;
     this._userRepoPath = this.repoUrl.replace("https://github.com/", "");
     this.repoName = this._userRepoPath.split("/")[1];
-    this._fetchMaster(this._userRepoPath).subscribe(
-      (data) => {
-                  this.fetchData({type: "tree", sha: data.json().commit.commit.tree.sha, path: this.repoName})
-                },
-      (error) => {console.log(error)}
-    );
   }
 
   fetchData(treeObj: ITreeObject){
@@ -41,7 +35,7 @@ export class RepoViewerService extends RESTClient{
     }else{
       this.breadcrumbs.splice(bIndex+1, this.breadcrumbs.length - (bIndex+1));
     }
-    this._fetchTree(
+    return this._fetchTree(
           this._userRepoPath,
           treeObj.type,
           treeObj.sha
@@ -50,10 +44,15 @@ export class RepoViewerService extends RESTClient{
                     "type": treeObj.type,
                     "treeObjects": (treeObj.type == "tree") ? JSON.parse(val._body).tree : JSON.parse(val._body)
                   }
-        }).subscribe(
-          (data) => {this.currentData = data},
-          (error) => {console.log(error)}
-        );
+        });
+  }
+
+  fetchBranch(branchName: string){
+    return this._fetchBranch(this._userRepoPath, branchName);
+  }
+
+  fetchBranches(){
+    return this._fetchBranches(this._userRepoPath);
   }
 
   @GET("/repos/{userRepo}/git/{type}s/{shaId}")
@@ -61,8 +60,13 @@ export class RepoViewerService extends RESTClient{
     return null;
   }
 
-  @GET("/repos/{userRepo}/branches/master")
-  private _fetchMaster(@Path("userRepo") url: string){
+  @GET("/repos/{userRepo}/branches/{branch}")
+  private _fetchBranch(@Path("userRepo") url: string, @Path("branch") branch: string){
+    return null;
+  }
+
+  @GET("/repos/{userRepo}/branches")
+  private _fetchBranches(@Path("userRepo") url: string){
     return null;
   }
 }
