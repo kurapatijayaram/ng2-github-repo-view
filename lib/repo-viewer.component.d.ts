@@ -1,9 +1,10 @@
-import { OnInit } from "@angular/core";
+import { OnInit, OnDestroy } from "@angular/core";
 import { RepoViewerService } from "./repo-viewer.service";
-export declare class RepoViewer implements OnInit {
+export declare class RepoViewer implements OnInit, OnDestroy {
     private _rvs;
     private _window;
     defaultBranch: string;
+    commitId: string;
     handle: string;
     branches: Object[];
     repoData: any;
@@ -14,4 +15,5 @@ export declare class RepoViewer implements OnInit {
     ngOnInit(): void;
     pathClick(treeObj: any): void;
     breadcrumbClick(treeObj: any, last: any): void;
+    ngOnDestroy(): void;
 }

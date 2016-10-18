@@ -48,11 +48,19 @@ export class RepoViewerService extends RESTClient{
   }
 
   fetchBranch(branchName: string){
-    return this._fetchBranch(this._userRepoPath, branchName);
+    return this._fetchBranch(this._userRepoPath, branchName).map(function(val, idx, obs){
+      return JSON.parse(val._body).commit;
+    });
   }
 
   fetchBranches(){
     return this._fetchBranches(this._userRepoPath);
+  }
+
+  fetchCommit(commitId: string){
+    return this._fetchCommit(this._userRepoPath, commitId).map(function(val, idx, obs){
+      return JSON.parse(val._body);
+    });
   }
 
   @GET("/repos/{userRepo}/git/{type}s/{shaId}")
@@ -67,6 +75,12 @@ export class RepoViewerService extends RESTClient{
 
   @GET("/repos/{userRepo}/branches")
   private _fetchBranches(@Path("userRepo") url: string){
+    return null;
+  }
+
+  //https://api.github.com/repos/kurapatijayaram/angular2-rest/commits/76c48774ff7d7a23385f62435cf9cc25a6d451a4
+  @GET("/repos/{userRepo}/commits/{commitId}")
+  private _fetchCommit(@Path("userRepo") url: string, @Path("commitId") commitId: string){
     return null;
   }
 }

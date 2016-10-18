@@ -18,7 +18,9 @@ export declare class RepoViewerService extends RESTClient {
     fetchData(treeObj: ITreeObject): any;
     fetchBranch(branchName: string): any;
     fetchBranches(): any;
+    fetchCommit(commitId: string): any;
     private _fetchTree(url, type, shaId);
     private _fetchBranch(url, branch);
     private _fetchBranches(url);
+    private _fetchCommit(url, commitId);
 }

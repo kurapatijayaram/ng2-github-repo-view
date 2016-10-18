@@ -1,6 +1,6 @@
 {
   "name": "ng2-github-repo-view",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A simple GitHub repo viewer.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -9,13 +9,13 @@
     "replaceUrls": "replace '../fonts' 'node_modules/ng2-github-repo-view/lib/fonts' lib/css/bootstrap.css lib/css/bootstrap.min.css"
   },
   "dependencies": {
-    "@angular/common": "^2.0.0",
-    "@angular/core": "^2.0.0",
-    "@angular/http": "^2.0.0",
-    "@angular/platform-browser": "^2.0.0",
+    "@angular/common": "~2.1.0",
+    "@angular/core": "~2.1.0",
+    "@angular/http": "~2.1.0",
+    "@angular/platform-browser": "~2.1.0",
     "angular2-rest": "git://github.com/kurapatijayaram/angular2-rest.git",
-    "rxjs": "^5.0.0-beta.12",
-    "zone.js": "^0.6.21"
+    "rxjs": "5.0.0-beta.12",
+    "zone.js": "^0.6.25"
   },
   "author": "Jayaram Kurapati",
   "license": "ISC"

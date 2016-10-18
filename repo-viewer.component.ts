@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { RepoViewerService, ITreeObject } from "./repo-viewer.service";
 import { Subject} from 'rxjs/Rx';
 
@@ -8,9 +8,6 @@ import { Subject} from 'rxjs/Rx';
   template: `
               <div class="row">
                 <div class="col-md-12">
-                  <select class="form-control">
-                    <option *ngFor="let branch of branches">{{branch.name}}</option>
-                  </select>
                   <ol class="breadcrumb">
                     <li *ngFor="let crumb of _rvs.breadcrumbs;let lastIndex = last"  [ngClass]="{'active': lastIndex}">
                       <a (click)="breadcrumbClick(crumb, lastIndex)">{{crumb.path}}</a>
@@ -32,12 +29,12 @@ import { Subject} from 'rxjs/Rx';
   styleUrls: ['css/bootstrap.min.css'],
   providers: [RepoViewerService, {provide: Window, useValue: window}]
 })
-export class RepoViewer implements OnInit {
-  @Input("defaultBranch") defaultBranch: string;
+export class RepoViewer implements OnInit, OnDestroy {
+  @Input("branch") defaultBranch: string;
+  @Input("commitId") commitId: string;
 
   @Input("handle")
   set handle(value: string){
-    console.log("from setter");
     this._rvs.setUrl(value);
   }
 
@@ -49,7 +46,6 @@ export class RepoViewer implements OnInit {
   private _changeTree$ = new Subject<ITreeObject>();
 
   constructor(private _rvs: RepoViewerService, private _window: Window){
-    console.log("from construcotr")
     this._branches$.subscribe(
       (data) => {
         this.branches = data;
@@ -72,7 +68,7 @@ export class RepoViewer implements OnInit {
       (data) => {
         this._rvs.fetchBranch(this.defaultBranch).subscribe(
           (data) => {
-            this._changeTree$.next({type: "tree", sha: data.json().commit.commit.tree.sha, path: this._rvs.repoName});
+            this._changeTree$.next({type: "tree", sha: data.commit.tree.sha, path: this._rvs.repoName});
           }
         )
       }
@@ -80,12 +76,21 @@ export class RepoViewer implements OnInit {
   }
 
   ngOnInit(){
-    this._rvs.fetchBranches().subscribe(
-      (data) => {
-        this._branches$.next(data.json())
-      },
-      (error) => {}
-    )
+    if(this.commitId == null){
+      this._rvs.fetchBranches().subscribe(
+        (data) => {
+          this._branches$.next(data.json())
+        },
+        (error) => {}
+      )
+    }else{
+      this._rvs.fetchCommit(this.commitId).subscribe(
+        (data) => {
+          this._changeTree$.next({type: "tree", sha: data.commit.tree.sha, path: this._rvs.repoName});
+        }
+      )
+    }
+    
   }
 
   pathClick(treeObj){
@@ -96,5 +101,11 @@ export class RepoViewer implements OnInit {
     if(!last){
       this._changeTree$.next(treeObj);
     }
+  }
+
+  ngOnDestroy() {
+    this._branches$.unsubscribe();
+    this._branchChange$.unsubscribe();
+    this._changeTree$.unsubscribe();
   }
 }
